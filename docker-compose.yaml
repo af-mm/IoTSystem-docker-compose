@@ -1,0 +1,86 @@
+version: "3"
+services:
+  ext_mqtt_broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1024:1883"
+
+  int_mqtt_broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1025:1883"
+      
+  ext_mqtt_logger:
+    image: afmm/mqtt_logger:1.0
+    depends_on:
+      - ext_mqtt_broker
+    environment:
+      - MQTT_BROKER_HOST=ext_mqtt_broker
+      - MQTT_BROKER_PORT=1883
+      
+      - DB_HOST=iotfox.ru
+      - DB_PORT=20004
+      - DB_USER=postgres
+      - DB_PSWD=1234
+      - DB_NAME=IoTSystemDB
+      - DB_LAST_VALUES_TABLE=device.external_mqtt_broker_last_values
+      - DB_HISTORY_TABLE=device.external_mqtt_broker_history
+      
+  int_mqtt_logger:
+    image: afmm/mqtt_logger:1.0
+    depends_on:
+      - int_mqtt_broker
+    environment:
+      - MQTT_BROKER_HOST=int_mqtt_broker
+      - MQTT_BROKER_PORT=1883
+      
+      - DB_HOST=iotfox.ru
+      - DB_PORT=20004
+      - DB_USER=postgres
+      - DB_PSWD=1234
+      - DB_NAME=IoTSystemDB
+      - DB_LAST_VALUES_TABLE=device.internal_mqtt_broker_last_values
+      - DB_HISTORY_TABLE=device.internal_mqtt_broker_history
+
+  iot_gateway:
+    image: afmm/iot_gateway:1.0
+    depends_on:
+      - ext_mqtt_broker
+      - int_mqtt_broker
+    environment:
+      - EMQTT_BROKER_HOST=ext_mqtt_broker
+      - EMQTT_BROKER_PORT=1883
+      - EMQTT_LOGIN=gw
+      - EMQTT_PSWD=b0b3e594420357e78eb8554aebc77231
+      
+      - IMQTT_BROKER_HOST=int_mqtt_broker
+      - IMQTT_BROKER_PORT=1883
+      
+      - DB_HOST=iotfox.ru
+      - DB_PORT=20004
+      - DB_USER=postgres
+      - DB_PSWD=1234
+      - DB_NAME=IoTSystemDB
+      - DB_E2I_MAPPING_TABLE=device.gw_e2i_mapping
+      - DB_I2E_MAPPING_TABLE=device.gw_i2e_mapping
+
+  simple_web:
+    image: afmm/simple_iot_control_panel:1.0
+    ports:
+      - "1026:80"
+    environment:
+      - WEB_SERVER_PORT=80
+      - MQTT_BROKER_HOST=int_mqtt_broker
+      - MQTT_BROKER_PORT=1883
+      
+  minecraft_iot:
+    image: afmm/minecraft-iot:1.0
+    ports:
+      - "1027:25565"
+    depends_on:
+      - int_mqtt_broker
+    environment:
+      - MQTT_BROKER_HOST=int_mqtt_broker
+      - MQTT_BROKER_PORT=1883
+
+      
