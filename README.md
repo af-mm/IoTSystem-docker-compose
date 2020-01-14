@@ -2,4 +2,4 @@
 
 1. download-repos.sh
 2. build_images.sh
-3. sudo docker-compose up
+3. sudo run.sh
