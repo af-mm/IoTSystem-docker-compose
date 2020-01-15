@@ -17,14 +17,13 @@ services:
     environment:
       - MQTT_BROKER_HOST=ext_mqtt_broker
       - MQTT_BROKER_PORT=1883
-      
-      - DB_HOST=iotfox.ru
-      - DB_PORT=20004
-      - DB_USER=postgres
-      - DB_PSWD=1234
-      - DB_NAME=IoTSystemDB
-      - DB_LAST_VALUES_TABLE=device.external_mqtt_broker_last_values
-      - DB_HISTORY_TABLE=device.external_mqtt_broker_history
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PSWD=${DB_PSWD}
+      - DB_NAME=${DB_NAME}
+      - DB_LAST_VALUES_TABLE=${EXT_MQTT_BROKER_DB_LAST_VALUES_TABLE}
+      - DB_HISTORY_TABLE=${EXT_MQTT_BROKER_DB_HISTORY_TABLE}
       
   int_mqtt_logger:
     image: afmm/mqtt_logger:1.0
@@ -33,14 +32,13 @@ services:
     environment:
       - MQTT_BROKER_HOST=int_mqtt_broker
       - MQTT_BROKER_PORT=1883
-      
-      - DB_HOST=iotfox.ru
-      - DB_PORT=20004
-      - DB_USER=postgres
-      - DB_PSWD=1234
-      - DB_NAME=IoTSystemDB
-      - DB_LAST_VALUES_TABLE=device.internal_mqtt_broker_last_values
-      - DB_HISTORY_TABLE=device.internal_mqtt_broker_history
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PSWD=${DB_PSWD}
+      - DB_NAME=${DB_NAME}
+      - DB_LAST_VALUES_TABLE=${INT_MQTT_BROKER_DB_LAST_VALUES_TABLE}
+      - DB_HISTORY_TABLE=${INT_MQTT_BROKER_DB_HISTORY_TABLE}
 
   iot_gateway:
     image: afmm/iot_gateway:1.0
@@ -52,17 +50,15 @@ services:
       - EMQTT_BROKER_PORT=1883
       - EMQTT_LOGIN=gw
       - EMQTT_PSWD=b0b3e594420357e78eb8554aebc77231
-      
       - IMQTT_BROKER_HOST=int_mqtt_broker
       - IMQTT_BROKER_PORT=1883
-      
-      - DB_HOST=iotfox.ru
-      - DB_PORT=20004
-      - DB_USER=postgres
-      - DB_PSWD=1234
-      - DB_NAME=IoTSystemDB
-      - DB_E2I_MAPPING_TABLE=device.gw_e2i_mapping
-      - DB_I2E_MAPPING_TABLE=device.gw_i2e_mapping
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PSWD=${DB_PSWD}
+      - DB_NAME=${DB_NAME}
+      - DB_E2I_MAPPING_TABLE=${DB_E2I_MAPPING_TABLE}
+      - DB_I2E_MAPPING_TABLE=${DB_I2E_MAPPING_TABLE}
 
   simple_web:
     image: afmm/simple_iot_control_panel:1.0
