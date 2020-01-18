@@ -52,17 +52,19 @@ services:
     environment:
       - EMQTT_BROKER_HOST=ext_mqtt_broker
       - EMQTT_BROKER_PORT=1883
-      - EMQTT_LOGIN=gw
-      - EMQTT_PSWD=b0b3e594420357e78eb8554aebc77231
+      - EMQTT_LOGIN=${IOT_GW_EMQTT_LOGIN}
+      - EMQTT_PSWD=${IOT_GW_EMQTT_PSWD}
       - IMQTT_BROKER_HOST=int_mqtt_broker
       - IMQTT_BROKER_PORT=1883
+      - IMQTT_LOGIN=${IOT_GW_IMQTT_LOGIN}
+      - IMQTT_PSWD=${IOT_GW_IMQTT_PSWD}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DB_PSWD=${DB_PSWD}
       - DB_NAME=${DB_NAME}
-      - DB_E2I_MAPPING_TABLE=${DB_E2I_MAPPING_TABLE}
-      - DB_I2E_MAPPING_TABLE=${DB_I2E_MAPPING_TABLE}
+      - DB_E2I_MAPPING_TABLE=${DB_IOT_GW_E2I_MAPPING_TABLE}
+      - DB_I2E_MAPPING_TABLE=${DB_IOT_GW_I2E_MAPPING_TABLE}
 
   simple_web:
     image: afmm/simple_iot_control_panel:1.0
