@@ -17,6 +17,8 @@ services:
     environment:
       - MQTT_BROKER_HOST=ext_mqtt_broker
       - MQTT_BROKER_PORT=1883
+      - MQTT_LOGIN=${EXT_MQTT_LOGGER_LOGIN}
+      - MQTT_PSWD=${EXT_MQTT_LOGGER_PSWD}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
@@ -32,6 +34,8 @@ services:
     environment:
       - MQTT_BROKER_HOST=int_mqtt_broker
       - MQTT_BROKER_PORT=1883
+      - MQTT_LOGIN=${INT_MQTT_LOGGER_LOGIN}
+      - MQTT_PSWD=${INT_MQTT_LOGGER_PSWD}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
